@@ -1,11 +1,42 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class Set {
     public static void main(String[] args){
         Deck deck = new Deck();
-        deck.printDeck();
+        Scanner s = new Scanner(System.in);
+        //deck.getDeck().forEach(Set::printCard);
+        deck.shuffle();
+        ArrayList<Card> cardsOnTable = deck.draw(12);
+        while(deck.decksize() > 0 || cardsOnTable.size() > 0){
+            System.out.println(deck.decksize());
+            while(!setOnTable(cardsOnTable)){
+                if (deck.decksize() == 0){
+                    System.out.println("out of deck cards and no set left");
+                    System.exit(0);
+                }
+                cardsOnTable = cardsOnTable.size() < 12 ?
+                        new ArrayList<>(Stream.concat(cardsOnTable.stream(), deck.draw(12 - cardsOnTable.size()).stream()).toList())
+                        : new ArrayList<>(Stream.concat(cardsOnTable.stream(), deck.draw(3).stream()).toList());
+            }
 
+            for(int i = 0;i< cardsOnTable.size();i++){
+                System.out.print(i+": ");
+                printCard(cardsOnTable.get(i));
+            }
+
+            Card[] choices = new Card[]{cardsOnTable.get(s.nextInt()), cardsOnTable.get(s.nextInt()), cardsOnTable.get(s.nextInt())};
+
+            if(checkForSet(choices[0],choices[1],choices[2])){
+                System.out.println("SET");
+                cardsOnTable.removeAll(Arrays.asList(choices));
+            }else{
+                System.out.println("no set");
+            }
+        }
     }
 
     public static boolean checkForSet(Card c1, Card c2, Card c3){
@@ -26,5 +57,23 @@ public class Set {
             return false;
         }
         return true;
+    }
+
+    public static boolean setOnTable(ArrayList<Card> table){
+        for (int i=0; i<table.size();i++){
+            for(int j=1; j<table.size();j++){
+                for(int k=2; k<table.size();k++){
+                    if (i!=j && i!=k && j!=k && checkForSet(table.get(i),table.get(j),table.get(k))){
+                        System.out.println(i+" "+j+" "+k);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void printCard(Card c){
+        System.out.println(c.getShading()+" "+c.getShape()+" "+c.getColour()+" "+c.getNumber());
     }
 }

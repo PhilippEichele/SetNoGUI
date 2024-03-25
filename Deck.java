@@ -24,9 +24,14 @@ public class Deck {
         Collections.shuffle(deck);
     }
 
-    public void printDeck(){
-        deck.forEach(n -> {
-            System.out.println(n.getShading()+" "+n.getShape()+" "+n.getColour()+" "+n.getNumber());
-        });
+    public ArrayList<Card> draw(int amt){
+        amt = Math.min(amt, deck.size());
+        ArrayList<Card> temp = new ArrayList <Card> (deck.subList(0,amt));
+        deck.subList(0,amt).clear();
+        return temp;
+    }
+
+    public int decksize(){
+        return deck.size();
     }
 }

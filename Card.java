@@ -26,6 +26,4 @@ public class Card {
     public Colour getColour() {
         return colour;
     }
-
-
 }
