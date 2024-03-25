@@ -5,15 +5,23 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class Set {
+    static ArrayList<Card> cardsOnTable;
+    static Deck deck;
+    static Scanner s;
     public static void main(String[] args){
-        Deck deck = new Deck();
-        Scanner s = new Scanner(System.in);
+        deck = new Deck();
+        s = new Scanner(System.in);
         //deck.getDeck().forEach(Set::printCard);
         deck.shuffle();
-        ArrayList<Card> cardsOnTable = deck.draw(12);
+        cardsOnTable = deck.draw(12);
+
+        gameloop();
+    }
+
+    public static void gameloop(){
         while(deck.decksize() > 0 || cardsOnTable.size() > 0){
             System.out.println(deck.decksize());
-            while(!setOnTable(cardsOnTable)){
+            while(!setOnTable()){
                 if (deck.decksize() == 0){
                     System.out.println("out of deck cards and no set left");
                     System.exit(0);
@@ -59,11 +67,11 @@ public class Set {
         return true;
     }
 
-    public static boolean setOnTable(ArrayList<Card> table){
-        for (int i=0; i<table.size();i++){
-            for(int j=1; j<table.size();j++){
-                for(int k=2; k<table.size();k++){
-                    if (i!=j && i!=k && j!=k && checkForSet(table.get(i),table.get(j),table.get(k))){
+    public static boolean setOnTable(){
+        for (int i=0; i<cardsOnTable.size();i++){
+            for(int j=1; j<cardsOnTable.size();j++){
+                for(int k=2; k<cardsOnTable.size();k++){
+                    if (i!=j && i!=k && j!=k && checkForSet(cardsOnTable.get(i),cardsOnTable.get(j),cardsOnTable.get(k))){
                         System.out.println(i+" "+j+" "+k);
                         return true;
                     }
