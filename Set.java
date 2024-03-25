@@ -11,7 +11,6 @@ public class Set {
     public static void main(String[] args){
         deck = new Deck();
         s = new Scanner(System.in);
-        //deck.getDeck().forEach(Set::printCard);
         deck.shuffle();
         cardsOnTable = deck.draw(12);
 
