@@ -71,7 +71,8 @@ public class Set {
             for(int j=1; j<cardsOnTable.size();j++){
                 for(int k=2; k<cardsOnTable.size();k++){
                     if (i!=j && i!=k && j!=k && checkForSet(cardsOnTable.get(i),cardsOnTable.get(j),cardsOnTable.get(k))){
-                        System.out.println(i+" "+j+" "+k);
+                        //System.out.println(i+" "+j+" "+k);
+                        //^^^^ only for debugging
                         return true;
                     }
                 }
