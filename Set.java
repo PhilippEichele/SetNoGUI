@@ -1,8 +1,6 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Stream;
+
 
 public class Set {
     static ArrayList<Card> cardsOnTable;
@@ -19,7 +17,7 @@ public class Set {
 
     public static void gameloop(){
         while(deck.decksize() > 0 || cardsOnTable.size() > 0){
-            System.out.println(deck.decksize());
+            System.out.println("Cards left in deck: "+deck.decksize());
             while(!setOnTable()){
                 if (deck.decksize() == 0){
                     System.out.println("out of deck cards and no set left");
@@ -34,15 +32,20 @@ public class Set {
                 System.out.print(i+": ");
                 printCard(cardsOnTable.get(i));
             }
+            try{
+                Card[] choices = new Card[]{cardsOnTable.get(s.nextInt()), cardsOnTable.get(s.nextInt()), cardsOnTable.get(s.nextInt())};
 
-            Card[] choices = new Card[]{cardsOnTable.get(s.nextInt()), cardsOnTable.get(s.nextInt()), cardsOnTable.get(s.nextInt())};
-
-            if(checkForSet(choices[0],choices[1],choices[2])){
-                System.out.println("SET");
-                cardsOnTable.removeAll(Arrays.asList(choices));
-            }else{
-                System.out.println("no set");
+                if(checkForSet(choices[0],choices[1],choices[2])){
+                    System.out.println("SET");
+                    cardsOnTable.removeAll(Arrays.asList(choices));
+                }else{
+                    System.out.println("no set");
+                }
+            }catch (InputMismatchException IME){
+                System.out.println("inputs must be Integers\n");
+                s.next();
             }
+
         }
     }
 
@@ -69,9 +72,15 @@ public class Set {
     public static boolean setOnTable(){
         for (int i=0; i<cardsOnTable.size();i++){
             for(int j=1; j<cardsOnTable.size();j++){
+                if (j==i){
+                    continue;
+                }
                 for(int k=2; k<cardsOnTable.size();k++){
-                    if (i!=j && i!=k && j!=k && checkForSet(cardsOnTable.get(i),cardsOnTable.get(j),cardsOnTable.get(k))){
-                        //System.out.println(i+" "+j+" "+k);
+                    if (j==k || i==k){
+                        continue;
+                    }
+                    if (checkForSet(cardsOnTable.get(i),cardsOnTable.get(j),cardsOnTable.get(k))){
+                        System.out.println(i+" "+j+" "+k);
                         //^^^^ only for debugging
                         return true;
                     }
